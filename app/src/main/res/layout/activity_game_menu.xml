@@ -1,0 +1,41 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/game_background"
+    tools:context="com.zhiz.japanesegirl.GameMenu">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imgVw_2x2"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/gamemenu_2x2" />
+
+            <ImageView
+                android:id="@+id/imgVw_4x4"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/gamemenu_4x4" />
+
+            <ImageView
+                android:id="@+id/imgVw_6x6"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:background="@drawable/gamemenu_6x6" />
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
