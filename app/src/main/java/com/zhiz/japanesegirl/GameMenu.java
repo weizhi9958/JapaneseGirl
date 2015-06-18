@@ -34,7 +34,7 @@ public class GameMenu extends Activity implements View.OnClickListener {
             case R.id.imgVw_2x2:
                 Intent it = new Intent(this,Game_2x2.class);
                 startActivity(it);
-                finish();
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
 
         }
@@ -62,6 +62,5 @@ public class GameMenu extends Activity implements View.OnClickListener {
         */
         return super.onOptionsItemSelected(item);
     }
-
 
 }

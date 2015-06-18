@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 
 
@@ -20,20 +22,27 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        oRlay=(RelativeLayout)findViewById(R.id.rlay);
+        oRlay = (RelativeLayout) findViewById(R.id.rlay);
         oRlay.setOnClickListener(this);
+
+        Animation alphaAnimation = new AlphaAnimation((float)0.0,  1);
+        alphaAnimation.setDuration(1000);//?置??持???
+        alphaAnimation.setFillAfter(true);//?置???束后保持?前的位置（即不返回到???始前的位置）
+
+        oRlay.setAnimation(alphaAnimation);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rlay:
-                Intent it = new Intent(this,GameMenu.class);
+                Intent it = new Intent(MainActivity.this, GameMenu.class);
                 startActivity(it);
-                finish();
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
