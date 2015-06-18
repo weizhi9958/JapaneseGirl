@@ -97,20 +97,6 @@
             </TableLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="20dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgVw2x2_NameIcon"
-                android:background="@drawable/edit_name_icon" />
-        </LinearLayout>
-
     </FrameLayout>
 
     <FrameLayout
@@ -171,64 +157,6 @@
             </FrameLayout>
         </LinearLayout>
 
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/FmLayoutEditName"
-        android:background="#be000000">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="200dp"
-                    android:layout_height="250dp"
-                    android:id="@+id/imageView"
-                    android:background="@drawable/edit_name_view" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="30dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ID"
-                        android:id="@+id/textView"
-                        android:layout_gravity="center|left"
-                        android:textSize="50dp"
-                        android:textColor="#ffffffff" />
-
-                    <EditText
-                        android:layout_width="110dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txt2x2_Name"
-                        android:layout_gravity="center"
-                        android:textColor="#ffffffff"
-                        android:text="Player" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/imgVw2x2_NameBtn"
-                    android:background="@drawable/btn_name"
-                    android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="70dp" />
-            </FrameLayout>
-        </LinearLayout>
     </FrameLayout>
 
 </FrameLayout>
