@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -46,20 +47,13 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
     private FrameLayout oFlayoutEnd;
     private int tsec = 0, csec = 0, cmin = 0;
     private boolean startflag = true;
-
-    int iCard[][] = {{R.drawable.a0, 0}, {R.drawable.a1, 0},
-            {R.drawable.a0, 1}, {R.drawable.a1, 1},
-            {R.drawable.a0, 2}, {R.drawable.a1, 2},
-            {R.drawable.a0, 3}, {R.drawable.a1, 3},
-            {R.drawable.a0, 4}, {R.drawable.a1, 4},
-            {R.drawable.a0, 5}, {R.drawable.a1, 5},
-            {R.drawable.a0, 6}, {R.drawable.a1, 6},
-            {R.drawable.a0, 7}, {R.drawable.a1, 7}};
+    int iCard[][] = new int[16][2];
+    int iCardInit[][][] = new GlobalVariable().AllImgCard;
     int iFirstCard = -1, iLastCard = -1, iSeleCount = 0;
     String sTime = "";
     String sUserName = "";
 
-    MediaPlayer mbk,mgo;
+    MediaPlayer mbk, mgo;
     SoundPool soundCk, soundFl, soundSc;
     int iCk, iFl, iSc;
 
@@ -130,7 +124,29 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
             //false = 蓋牌
             bFaceUp[i] = false;
 
-            //使用亂數將iCard陣列打亂
+        }
+
+        //將40張(20組)圖片之陣列(iCardInit) 打亂
+        for (int i = 0; i < iCardInit.length; i++) {
+            int n1 = (int) (Math.random() * iCardInit.length);
+            int n2 = (int) (Math.random() * iCardInit.length);
+
+            int temp[][] = iCardInit[n1];
+            iCardInit[n1] = iCardInit[n2];
+            iCardInit[n2] = temp;
+        }
+
+        //將已打亂的iCardInit的前16筆放入iCard
+        int count = 0;
+        for (int i = 0; i < iCard.length / 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                iCard[count] = iCardInit[i][j];
+                count++;
+            }
+        }
+
+        //將iCard陣列打亂
+        for (int i = 0; i < iCard.length; i++) {
             int n1 = (int) (Math.random() * iCard.length);
             int n2 = (int) (Math.random() * iCard.length);
 
@@ -266,6 +282,7 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
 
     class CreateData extends AsyncTask<String, String, String> {
 
+        //顯示讀取畫面
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -276,24 +293,24 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
             pDialog.show();
         }
 
+        //讀取中要做的事
         @Override
         protected String doInBackground(String... params) {
             try {
                 String time = oEndTime.getText().toString();
-                // String timesub = time.substring(5);
                 List<NameValuePair> param = new ArrayList<NameValuePair>();
                 param.add(new BasicNameValuePair(TAG_NAME, sUserName));
                 param.add(new BasicNameValuePair(TAG_TIME, time));
 
                 JSONObject json = jsonParser.makeHttpRequest(url_create_data, "POST", param);
                 Log.d("Create Response", json.toString());
-                // int success = json.getInt(TAG_SUCCESS);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
         }
 
+        //讀取完要做的事
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();

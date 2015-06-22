@@ -5,6 +5,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 
 public class GameMenu extends FragmentActivity implements View.OnClickListener {
@@ -36,6 +38,7 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_menu);
+
         //全螢幕
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -54,18 +57,8 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
             oFmLayoutName.setVisibility(View.GONE);
         }
 
+        CreateTab();
 
-        mTabHost = (TabHost)findViewById(R.id.tabHost);
-        mTabHost.setup();
-        mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
-
-        mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
-        mTabManager.addTab(
-                mTabHost.newTabSpec("Fragment1").setIndicator("Fragment1"),
-                Fragment1.class, null);
-        mTabManager.addTab(
-                mTabHost.newTabSpec("Fragment2").setIndicator("Fragment2"),
-                Fragment2.class, null);
     }
 
     private void initView() {
@@ -145,6 +138,32 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         }
     }
 
+    private void CreateTab(){
+
+        mTabHost = null;
+        mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost.setup();
+        mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
+
+        mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
+        mTabManager.addTab(
+                mTabHost.newTabSpec("4x4").setIndicator("4x4"),
+                Fragment1.class, null);
+                /*
+                mTabManager.addTab(
+                        mTabHost.newTabSpec("Fragment2").setIndicator("Fragment2"),
+                        Fragment2.class, null);
+*/
+
+        for (int i =0; i < mTabHost.getChildCount(); i++) {
+            //修改字體大小及顏色
+            TextView tv = (TextView) mTabHost.getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextSize(20);
+            tv.setTextColor(this.getResources().getColorStateList(android.R.color.white));
+
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
