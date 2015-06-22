@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/game_background"
-    tools:context="com.zhiz.japanesegirl.Game_2x2">
+    tools:context="com.zhiz.japanesegirl.Game_4x4">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -23,21 +23,21 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imgVw2x2_home"
+                    android:id="@+id/imgVw4x4_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/home" />
 
                 <ImageView
-                    android:id="@+id/imgVw2x2_again"
+                    android:id="@+id/imgVw4x4_again"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/again" />
 
                 <ImageView
-                    android:id="@+id/imgVw2x2_sound"
+                    android:id="@+id/imgVw4x4_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/sound_on" />
@@ -45,7 +45,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/txt2x2_time"
+                android:id="@+id/txt4x4_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -63,21 +63,32 @@
             <TableLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:stretchColumns="*">
+                android:stretchColumns="*"
+                android:layout_marginTop="50dp">
 
                 <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imgVw2x2_0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/imgVw4x4_0"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
 
                     <ImageView
-                        android:id="@+id/imgVw2x2_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/imgVw4x4_1"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_2"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_3"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
                 </TableRow>
 
                 <TableRow
@@ -85,14 +96,74 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imgVw2x2_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/imgVw4x4_4"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
 
                     <ImageView
-                        android:id="@+id/imgVw2x2_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:id="@+id/imgVw4x4_5"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_6"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_7"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_8"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_9"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_10"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_11"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_12"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_13"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_14"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
+
+                    <ImageView
+                        android:id="@+id/imgVw4x4_15"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
@@ -118,13 +189,13 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imgVw2x2_EndView"
+                    android:id="@+id/imgVw4x4_EndView"
                     android:layout_width="200dp"
                     android:layout_height="250dp"
                     android:background="@drawable/winner" />
 
                 <TextView
-                    android:id="@+id/txt2x2_EndTime"
+                    android:id="@+id/txt4x4_EndTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -140,19 +211,19 @@
                     android:layout_marginBottom="20dp">
 
                     <ImageView
-                        android:id="@+id/imgVw2x2_EndHome"
+                        android:id="@+id/imgVw4x4_EndHome"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginRight="30dp"
                         android:background="@drawable/home" />
 
                     <ImageView
-                        android:id="@+id/imgVw2x2_EndAgain"
+                        android:id="@+id/imgVw4x4_EndAgain"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentRight="false"
-                        android:layout_toRightOf="@+id/imgVw2x2_EndHome"
+                        android:layout_toRightOf="@+id/imgVw4x4_EndHome"
                         android:background="@drawable/again" />
                 </RelativeLayout>
             </FrameLayout>

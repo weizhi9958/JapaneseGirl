@@ -7,10 +7,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +19,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -32,35 +31,42 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Game_2x2 extends Activity implements View.OnClickListener {
+public class Game_4x4 extends Activity implements View.OnClickListener {
 
-    private static final String url_create_data = "http://218.161.61.62/japan/create_2x2data.php";
+    private static final String url_create_data = "http://218.161.61.62/japan/create_4x4data.php";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
 
-    private ImageView oImgVw2x2[] = new ImageView[4];
-    boolean bFaceUp[] = new boolean[4];
+    private ImageView oImgVw4x4[] = new ImageView[16];
+    boolean bFaceUp[] = new boolean[16];
     private ImageView oHome, oAgain, oSound, oEndHome, oEndAgain;
     private TextView oTimer, oEndTime;
     private FrameLayout oFlayoutEnd;
     private int tsec = 0, csec = 0, cmin = 0;
     private boolean startflag = true;
 
-    int iCard[][] = {{R.drawable.a0, 0}, {R.drawable.a1, 0}, {R.drawable.b0, 1}, {R.drawable.b1, 1}};
+    int iCard[][] = {{R.drawable.a0, 0}, {R.drawable.a1, 0},
+            {R.drawable.a0, 1}, {R.drawable.a1, 1},
+            {R.drawable.a0, 2}, {R.drawable.a1, 2},
+            {R.drawable.a0, 3}, {R.drawable.a1, 3},
+            {R.drawable.a0, 4}, {R.drawable.a1, 4},
+            {R.drawable.a0, 5}, {R.drawable.a1, 5},
+            {R.drawable.a0, 6}, {R.drawable.a1, 6},
+            {R.drawable.a0, 7}, {R.drawable.a1, 7}};
     int iFirstCard = -1, iLastCard = -1, iSeleCount = 0;
     String sTime = "";
     String sUserName = "";
 
-    MediaPlayer mbk, mgo;
+    MediaPlayer mbk,mgo;
     SoundPool soundCk, soundFl, soundSc;
     int iCk, iFl, iSc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_2x2);
+        setContentView(R.layout.activity_game_4x4);
         //全螢幕
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -71,18 +77,18 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         sUserName = it.getStringExtra(TAG_NAME);
         initView();
         initCard();
-
     }
 
     private void initView() {
         oFlayoutEnd = (FrameLayout) findViewById(R.id.FmLayoutEnd);
-        oHome = (ImageView) findViewById(R.id.imgVw2x2_home);
-        oAgain = (ImageView) findViewById(R.id.imgVw2x2_again);
-        oSound = (ImageView) findViewById(R.id.imgVw2x2_sound);
-        oEndHome = (ImageView) findViewById(R.id.imgVw2x2_EndHome);
-        oEndAgain = (ImageView) findViewById(R.id.imgVw2x2_EndAgain);
-        oTimer = (TextView) findViewById(R.id.txt2x2_time);
-        oEndTime = (TextView) findViewById(R.id.txt2x2_EndTime);
+        oHome = (ImageView) findViewById(R.id.imgVw4x4_home);
+        oAgain = (ImageView) findViewById(R.id.imgVw4x4_again);
+        oSound = (ImageView) findViewById(R.id.imgVw4x4_sound);
+        oEndHome = (ImageView) findViewById(R.id.imgVw4x4_EndHome);
+        oEndAgain = (ImageView) findViewById(R.id.imgVw4x4_EndAgain);
+        oTimer = (TextView) findViewById(R.id.txt4x4_time);
+        oEndTime = (TextView) findViewById(R.id.txt4x4_EndTime);
+
 
         oHome.setOnClickListener(this);
         oAgain.setOnClickListener(this);
@@ -105,8 +111,6 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         iCk = soundCk.load(this, R.raw.card_click, 1);
         iFl = soundFl.load(this, R.raw.card_fail, 1);
         iSc = soundSc.load(this, R.raw.card_success, 1);
-
-
     }
 
     private void initCard() {
@@ -117,11 +121,11 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
 
         for (int i = 0; i < iCard.length; i++) {
             //將背景圖放入ImageView裡
-            String txtID = "imgVw2x2_" + i;
+            String txtID = "imgVw4x4_" + i;
             int regID = getResources().getIdentifier(txtID, "id", "com.zhiz.japanesegirl");
-            oImgVw2x2[i] = (ImageView) findViewById(regID);
-            oImgVw2x2[i].setImageResource(R.drawable.word_background);
-            oImgVw2x2[i].setOnClickListener(this);
+            oImgVw4x4[i] = (ImageView) findViewById(regID);
+            oImgVw4x4[i].setImageResource(R.drawable.word_background);
+            oImgVw4x4[i].setOnClickListener(this);
 
             //false = 蓋牌
             bFaceUp[i] = false;
@@ -139,7 +143,7 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.imgVw2x2_home:
+            case R.id.imgVw4x4_home:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
                 Intent itHome = new Intent(this, GameMenu.class);
                 itHome.putExtra(TAG_NAME, sUserName);
@@ -147,14 +151,13 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
                 overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
                 finish();
                 break;
-            case R.id.imgVw2x2_again:
+            case R.id.imgVw4x4_again:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
-                Intent itAgain = new Intent(this, Game_2x2.class);
-                itAgain.putExtra(TAG_NAME, sUserName);
+                Intent itAgain = new Intent(this, Game_4x4.class);
                 startActivity(itAgain);
                 finish();
                 break;
-            case R.id.imgVw2x2_EndHome:
+            case R.id.imgVw4x4_EndHome:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
                 Intent itEndHome = new Intent(this, GameMenu.class);
                 itEndHome.putExtra(TAG_NAME, sUserName);
@@ -162,10 +165,9 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
                 overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
                 finish();
                 break;
-            case R.id.imgVw2x2_EndAgain:
+            case R.id.imgVw4x4_EndAgain:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
-                Intent itEndAgain = new Intent(this, Game_2x2.class);
-                itEndAgain.putExtra(TAG_NAME, sUserName);
+                Intent itEndAgain = new Intent(this, Game_4x4.class);
                 startActivity(itEndAgain);
                 finish();
                 break;
@@ -174,11 +176,11 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
 
         //迴圈判斷點擊的牌
         for (int i = 0; i < iCard.length; i++) {
-            if (v.getId() == oImgVw2x2[i].getId()) {
+            if (v.getId() == oImgVw4x4[i].getId()) {
                 //如果有上次點錯紀錄 , 將兩張牌蓋回背面 , 設定第一張牌為flase , 翻牌數-1 , 將First及Last設為預設
                 if (iLastCard != -1) {
-                    oImgVw2x2[iLastCard].setImageResource(R.drawable.word_background);
-                    oImgVw2x2[iFirstCard].setImageResource(R.drawable.word_background);
+                    oImgVw4x4[iLastCard].setImageResource(R.drawable.word_background);
+                    oImgVw4x4[iFirstCard].setImageResource(R.drawable.word_background);
                     bFaceUp[iFirstCard] = false;
                     iSeleCount--;
                     iFirstCard = -1;
@@ -186,25 +188,24 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
                 }
                 //如果點到的牌=false(翻面) 以及是第一張牌 , 將牌翻面 , 總翻牌數+1
                 if (!bFaceUp[i] && iFirstCard == -1) {
-                    oImgVw2x2[i].setImageResource(iCard[i][0]);
+                    oImgVw4x4[i].setImageResource(iCard[i][0]);
                     iFirstCard = i;
                     bFaceUp[i] = true;
                     iSeleCount++;
                     soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
 
-
                     //如果點到的牌為翻面 以及不是第一張牌
                 } else if (!bFaceUp[i] && iFirstCard != -1) {
                     //如果點到的牌之陣列第二維 = 第一張牌之陣列第二維 , 將牌翻面 , 總翻牌數+1
                     if (iCard[iFirstCard][1] == iCard[i][1]) {
-                        oImgVw2x2[i].setImageResource(iCard[i][0]);
+                        oImgVw4x4[i].setImageResource(iCard[i][0]);
                         iFirstCard = -1;
                         bFaceUp[i] = true;
                         iSeleCount++;
                         soundSc.play(iSc, 1.0F, 1.0F, 0, 0, 1.0F);
                     } else {
                         //將牌翻面 , 將i值存入iLastCard
-                        oImgVw2x2[i].setImageResource(iCard[i][0]);
+                        oImgVw4x4[i].setImageResource(iCard[i][0]);
                         iLastCard = i;
                         soundFl.play(iFl, 1.0F, 1.0F, 0, 0, 1.0F);
                     }
@@ -220,9 +221,8 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
             oFlayoutEnd.setVisibility(View.VISIBLE);
             new CreateData().execute();
         }
-
-
     }
+
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -269,7 +269,7 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(Game_2x2.this);
+            pDialog = new ProgressDialog(Game_4x4.this);
             pDialog.setMessage("分數儲存中...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
@@ -297,7 +297,7 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         @Override
         protected void onPostExecute(String s) {
             pDialog.dismiss();
-            mgo = MediaPlayer.create(Game_2x2.this, R.raw.gameover);
+            mgo = MediaPlayer.create(Game_4x4.this, R.raw.gameover);
             mgo.start();
         }
     }
@@ -314,11 +314,10 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         mbk.start();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_game_2x2, menu);
+        getMenuInflater().inflate(R.menu.menu_game_4x4, menu);
         return true;
     }
 
@@ -327,6 +326,12 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zhiz.japanesegirl" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,6 +25,10 @@
         <activity
             android:name=".Game_2x2"
             android:label="@string/title_activity_game_2x2" >
+        </activity>
+        <activity
+            android:name=".Game_4x4"
+            android:label="@string/title_activity_game_4x4" >
         </activity>
     </application>
 

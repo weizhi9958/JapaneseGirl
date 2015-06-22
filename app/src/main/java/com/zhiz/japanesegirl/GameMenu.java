@@ -1,44 +1,150 @@
 package com.zhiz.japanesegirl;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TabHost;
 
 
-public class GameMenu extends Activity implements View.OnClickListener {
+public class GameMenu extends FragmentActivity implements View.OnClickListener {
 
+    private static final String TAG_NAME = "name";
+
+    FrameLayout oFmLayoutMain,oFmLayoutName,oFmLayoutRank;
     ImageView oImgVw_2x2, oImgVw_4x4, oImgVw_6x6;
+    ImageView oBtnNameIcon, oBtnName;
+    ImageView oRankIcon,oRankClose;
+    EditText oUserName;
+    String sUserName;
+    MediaPlayer mbk;
+    SoundPool soundCk;
+    int iCk;
 
+    private TabHost mTabHost;
+    private TabManager mTabManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_menu);
+        //全螢幕
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        oImgVw_2x2=(ImageView)findViewById(R.id.imgVw_2x2);
-        oImgVw_4x4=(ImageView)findViewById(R.id.imgVw_4x4);
-        oImgVw_6x6=(ImageView)findViewById(R.id.imgVw_6x6);
+
+        initView();
+        mbk = MediaPlayer.create(this, R.raw.backmenu);
+
+        mbk.setLooping(true);
+        if(!mbk.isPlaying()) {
+            mbk.start();
+        }
+        //如果有回傳姓名資料則不顯示輸入視窗
+        Intent it = getIntent();
+        if (it.hasExtra(TAG_NAME)) {
+            sUserName = it.getStringExtra(TAG_NAME);
+            oUserName.setText(it.getStringExtra(TAG_NAME));
+            oFmLayoutName.setVisibility(View.GONE);
+        }
+
+
+        mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost.setup();
+        mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
+
+        mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
+        mTabManager.addTab(
+                mTabHost.newTabSpec("Fragment1").setIndicator("Fragment1"),
+                Fragment1.class, null);
+        mTabManager.addTab(
+                mTabHost.newTabSpec("Fragment2").setIndicator("Fragment2"),
+                Fragment2.class, null);
+    }
+
+    private void initView() {
+        oImgVw_2x2 = (ImageView) findViewById(R.id.imgVw_2x2);
+        oImgVw_4x4 = (ImageView) findViewById(R.id.imgVw_4x4);
+        oImgVw_6x6 = (ImageView) findViewById(R.id.imgVw_6x6);
+        oBtnName = (ImageView) findViewById(R.id.imgVw_NameBtn);
+        oBtnNameIcon = (ImageView) findViewById(R.id.imgVw_Name);
+        oRankIcon=(ImageView)findViewById(R.id.imgVw_Rank);
+        oRankClose=(ImageView)findViewById(R.id.imgVw_Close);
+        oFmLayoutName = (FrameLayout) findViewById(R.id.FmLayoutName);
+        oFmLayoutMain=(FrameLayout)findViewById(R.id.FmLayoutMain);
+        oFmLayoutRank=(FrameLayout)findViewById(R.id.FmLayoutRank);
+        oUserName = (EditText) findViewById(R.id.txt_Name);
+
+
         oImgVw_2x2.setOnClickListener(this);
         oImgVw_4x4.setOnClickListener(this);
         oImgVw_6x6.setOnClickListener(this);
+        oBtnName.setOnClickListener(this);
+        oBtnNameIcon.setOnClickListener(this);
+        oRankIcon.setOnClickListener(this);
+        oRankClose.setOnClickListener(this);
+
+        soundCk = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
+        iCk = soundCk.load(this, R.raw.card_click, 1);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mbk.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mbk.start();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.imgVw_2x2:
-                Intent it = new Intent(this,Game_2x2.class);
-                startActivity(it);
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                Intent it22 = new Intent(this, Game_2x2.class);
+                it22.putExtra(TAG_NAME, sUserName);
+                startActivity(it22);
                 overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                finish();
                 break;
-
+            case R.id.imgVw_4x4:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                Intent it44 = new Intent(this, Game_4x4.class);
+                it44.putExtra(TAG_NAME, sUserName);
+                startActivity(it44);
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                finish();
+                break;
+            case R.id.imgVw_NameBtn:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                sUserName = oUserName.getText().toString();
+                oFmLayoutName.setVisibility(View.GONE);
+                break;
+            case R.id.imgVw_Name:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutName.setVisibility(View.VISIBLE);
+                break;
+            case R.id.imgVw_Rank:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutRank.setVisibility(View.VISIBLE);
+                break;
+            case R.id.imgVw_Close:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutRank.setVisibility(View.GONE);
+                break;
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

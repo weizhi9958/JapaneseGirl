@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
             Intent it = new Intent(MainActivity.this, GameMenu.class);
             startActivity(it);
             overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+            finish();
         }
     };
 
