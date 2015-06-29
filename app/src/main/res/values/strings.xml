@@ -7,4 +7,10 @@
     <string name="title_activity_game_2x2">Game_2x2</string>
     <string name="title_activity_game_4x4">Game_4x4</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
+    <string name="intro">HI~\n 這是一個日語的記憶學習小遊戲\n形容詞的反義詞訓練</string>
+    <string name="intro2">倆倆比對 正確的話\n即可進行下兩張\n
+錯誤的話 牌面會覆蓋回去\n
+持續進行，直到牌面全部比對完成\n
+即可紀錄您所花費的時間\n更新紀錄至排行榜\n
+一起記憶日語\n稱霸全世界吧!</string>
 </resources>

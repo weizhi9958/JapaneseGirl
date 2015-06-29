@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -22,10 +23,12 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
 
     private static final String TAG_NAME = "name";
 
-    FrameLayout oFmLayoutMain,oFmLayoutName,oFmLayoutRank;
+    FrameLayout oFmLayoutMain, oFmLayoutName, oFmLayoutRank, oFmLayoutIntro,oFmLayoutAbout;
     ImageView oImgVw_2x2, oImgVw_4x4, oImgVw_6x6;
     ImageView oBtnNameIcon, oBtnName;
-    ImageView oRankIcon,oRankClose;
+    ImageView oRankIcon, oRankClose;
+    ImageView oIntroIcon,oIntroClose;
+    ImageView oAboutIcon,oAboutFb,oAboutClose;
     EditText oUserName;
     String sUserName;
     MediaPlayer mbk;
@@ -34,6 +37,7 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
 
     private TabHost mTabHost;
     private TabManager mTabManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +50,7 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         mbk = MediaPlayer.create(this, R.raw.backmenu);
 
         mbk.setLooping(true);
-        if(!mbk.isPlaying()) {
+        if (!mbk.isPlaying()) {
             mbk.start();
         }
         //如果有回傳姓名資料則不顯示輸入視窗
@@ -58,7 +62,6 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         }
 
         CreateTab();
-
     }
 
     private void initView() {
@@ -67,13 +70,19 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         oImgVw_6x6 = (ImageView) findViewById(R.id.imgVw_6x6);
         oBtnName = (ImageView) findViewById(R.id.imgVw_NameBtn);
         oBtnNameIcon = (ImageView) findViewById(R.id.imgVw_Name);
-        oRankIcon=(ImageView)findViewById(R.id.imgVw_Rank);
-        oRankClose=(ImageView)findViewById(R.id.imgVw_Close);
+        oRankIcon = (ImageView) findViewById(R.id.imgVw_Rank);
+        oRankClose = (ImageView) findViewById(R.id.imgVw_Close);
+        oIntroIcon = (ImageView) findViewById(R.id.imgVw_Intro);
+        oIntroClose = (ImageView) findViewById(R.id.imgVw_Close2);
+        oAboutIcon = (ImageView) findViewById(R.id.imgVw_About);
+        oAboutFb = (ImageView) findViewById(R.id.imgVw_Fb);
+        oAboutClose = (ImageView) findViewById(R.id.imgVw_Close3);
         oFmLayoutName = (FrameLayout) findViewById(R.id.FmLayoutName);
-        oFmLayoutMain=(FrameLayout)findViewById(R.id.FmLayoutMain);
-        oFmLayoutRank=(FrameLayout)findViewById(R.id.FmLayoutRank);
+        oFmLayoutMain = (FrameLayout) findViewById(R.id.FmLayoutMain);
+        oFmLayoutRank = (FrameLayout) findViewById(R.id.FmLayoutRank);
+        oFmLayoutIntro = (FrameLayout) findViewById(R.id.FmLayoutIntro);
+        oFmLayoutAbout = (FrameLayout) findViewById(R.id.FmLayoutAbout);
         oUserName = (EditText) findViewById(R.id.txt_Name);
-
 
         oImgVw_2x2.setOnClickListener(this);
         oImgVw_4x4.setOnClickListener(this);
@@ -82,6 +91,11 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         oBtnNameIcon.setOnClickListener(this);
         oRankIcon.setOnClickListener(this);
         oRankClose.setOnClickListener(this);
+        oIntroIcon.setOnClickListener(this);
+        oIntroClose.setOnClickListener(this);
+        oAboutIcon.setOnClickListener(this);
+        oAboutFb.setOnClickListener(this);
+        oAboutClose.setOnClickListener(this);
 
         soundCk = new SoundPool(1, AudioManager.STREAM_MUSIC, 5);
         iCk = soundCk.load(this, R.raw.card_click, 1);
@@ -135,13 +149,37 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
                 oFmLayoutRank.setVisibility(View.GONE);
                 break;
+            case R.id.imgVw_Intro:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutIntro.setVisibility(View.VISIBLE);
+                break;
+            case R.id.imgVw_Close2:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutIntro.setVisibility(View.GONE);
+                break;
+            case R.id.imgVw_About:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutAbout.setVisibility(View.VISIBLE);
+                break;
+            case R.id.imgVw_Fb:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("https://www.facebook.com/Nihongogirl0312"));
+                startActivity(intent);
+                break;
+            case R.id.imgVw_Close3:
+                soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                oFmLayoutAbout.setVisibility(View.GONE);
+                break;
         }
     }
 
-    private void CreateTab(){
+    private void CreateTab() {
 
         mTabHost = null;
-        mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
         mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
 
@@ -149,13 +187,8 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         mTabManager.addTab(
                 mTabHost.newTabSpec("4x4").setIndicator("4x4"),
                 Fragment1.class, null);
-                /*
-                mTabManager.addTab(
-                        mTabHost.newTabSpec("Fragment2").setIndicator("Fragment2"),
-                        Fragment2.class, null);
-*/
 
-        for (int i =0; i < mTabHost.getChildCount(); i++) {
+        for (int i = 0; i < mTabHost.getChildCount(); i++) {
             //修改字體大小及顏色
             TextView tv = (TextView) mTabHost.getChildAt(i).findViewById(android.R.id.title);
             tv.setTextSize(20);

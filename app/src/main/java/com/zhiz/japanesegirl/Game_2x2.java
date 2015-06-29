@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,12 +45,12 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
     private ImageView oImgVw2x2[] = new ImageView[4];
     boolean bFaceUp[] = new boolean[4];
     private ImageView oHome, oAgain, oSound, oEndHome, oEndAgain;
-    private TextView oTimer, oEndTime;
+    private TextView oTimer, oEndTime,oAddOne;
     private FrameLayout oFlayoutEnd;
     private int tsec = 0, csec = 0, cmin = 0;
     private boolean startflag = true;
-
-    int iCard[][] = {{R.drawable.a0, 0}, {R.drawable.a1, 0}, {R.drawable.b0, 1}, {R.drawable.b1, 1}};
+    int iCard[][] = new int[4][2];
+    int iCardInit[][][] = new GlobalVariable().AllImgCard;
     int iFirstCard = -1, iLastCard = -1, iSeleCount = 0;
     String sTime = "";
     String sUserName = "";
@@ -56,6 +58,7 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
     MediaPlayer mbk, mgo;
     SoundPool soundCk, soundFl, soundSc;
     int iCk, iFl, iSc;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,29 +67,24 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
         //全螢幕
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
-
         Intent it = getIntent();
         sUserName = it.getStringExtra(TAG_NAME);
         initView();
         initCard();
-
     }
 
     private void initView() {
         oFlayoutEnd = (FrameLayout) findViewById(R.id.FmLayoutEnd);
         oHome = (ImageView) findViewById(R.id.imgVw2x2_home);
         oAgain = (ImageView) findViewById(R.id.imgVw2x2_again);
-        oSound = (ImageView) findViewById(R.id.imgVw2x2_sound);
         oEndHome = (ImageView) findViewById(R.id.imgVw2x2_EndHome);
         oEndAgain = (ImageView) findViewById(R.id.imgVw2x2_EndAgain);
         oTimer = (TextView) findViewById(R.id.txt2x2_time);
         oEndTime = (TextView) findViewById(R.id.txt2x2_EndTime);
+        oAddOne = (TextView) findViewById(R.id.txt2x2_addone);
 
         oHome.setOnClickListener(this);
         oAgain.setOnClickListener(this);
-        oSound.setOnClickListener(this);
         oEndHome.setOnClickListener(this);
         oEndAgain.setOnClickListener(this);
 
@@ -125,8 +123,28 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
 
             //false = 蓋牌
             bFaceUp[i] = false;
+        }
 
-            //使用亂數將iCard陣列打亂
+        //將40張(20組)圖片之陣列(iCardInit) 打亂
+        for (int i = 0; i < iCardInit.length; i++) {
+            int n1 = (int) (Math.random() * iCardInit.length);
+            int n2 = (int) (Math.random() * iCardInit.length);
+
+            int temp[][] = iCardInit[n1];
+            iCardInit[n1] = iCardInit[n2];
+            iCardInit[n2] = temp;
+        }
+        //將已打亂的iCardInit的前4筆放入iCard
+        int count = 0;
+        for (int i = 0; i < iCard.length / 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                iCard[count] = iCardInit[i][j];
+                count++;
+            }
+        }
+
+        //將iCard陣列打亂
+        for (int i = 0; i < iCard.length; i++) {
             int n1 = (int) (Math.random() * iCard.length);
             int n2 = (int) (Math.random() * iCard.length);
 
@@ -206,7 +224,27 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
                         //將牌翻面 , 將i值存入iLastCard
                         oImgVw2x2[i].setImageResource(iCard[i][0]);
                         iLastCard = i;
+                        tsec++;
+                        CalcTime();
                         soundFl.play(iFl, 1.0F, 1.0F, 0, 0, 1.0F);
+                        animation = AnimationUtils.loadAnimation(Game_2x2.this, R.anim.alpha);
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                oAddOne.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                oAddOne.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        oAddOne.setAnimation(animation);
                     }
                 }
             }
@@ -229,25 +267,30 @@ public class Game_2x2 extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    csec = tsec % 60;
-                    cmin = tsec / 60;
-
-                    if (cmin < 10) {
-                        sTime = "0" + cmin;
-                    } else {
-                        sTime = "" + cmin;
-                    }
-                    if (csec < 10) {
-                        sTime = sTime + ":0" + csec;
-                    } else {
-                        sTime = sTime + ":" + csec;
-                    }
-                    //s字串為00:00格式
-                    oTimer.setText(sTime);
+                    CalcTime();
                     break;
             }
         }
     };
+
+    private void CalcTime() {
+        csec = tsec % 60;
+        cmin = tsec / 60;
+
+        if (cmin < 10) {
+            sTime = "0" + cmin;
+        } else {
+            sTime = "" + cmin;
+        }
+        if (csec < 10) {
+            sTime = sTime + ":0" + csec;
+        } else {
+            sTime = sTime + ":" + csec;
+        }
+        //s字串為00:00格式
+        oTimer.setText(sTime);
+    }
+
     private TimerTask task = new TimerTask() {
         @Override
         public void run() {

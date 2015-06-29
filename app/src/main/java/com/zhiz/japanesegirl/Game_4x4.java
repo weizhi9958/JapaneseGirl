@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,7 +45,7 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
     private ImageView oImgVw4x4[] = new ImageView[16];
     boolean bFaceUp[] = new boolean[16];
     private ImageView oHome, oAgain, oSound, oEndHome, oEndAgain;
-    private TextView oTimer, oEndTime;
+    private TextView oTimer, oEndTime, oAddOne;
     private FrameLayout oFlayoutEnd;
     private int tsec = 0, csec = 0, cmin = 0;
     private boolean startflag = true;
@@ -56,6 +58,8 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
     MediaPlayer mbk, mgo;
     SoundPool soundCk, soundFl, soundSc;
     int iCk, iFl, iSc;
+    Animation alphaanimation, fpanim;
+    int testi = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,29 +68,26 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
         //全螢幕
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
-
         Intent it = getIntent();
         sUserName = it.getStringExtra(TAG_NAME);
         initView();
         initCard();
+
+
     }
 
     private void initView() {
         oFlayoutEnd = (FrameLayout) findViewById(R.id.FmLayoutEnd);
         oHome = (ImageView) findViewById(R.id.imgVw4x4_home);
         oAgain = (ImageView) findViewById(R.id.imgVw4x4_again);
-        oSound = (ImageView) findViewById(R.id.imgVw4x4_sound);
         oEndHome = (ImageView) findViewById(R.id.imgVw4x4_EndHome);
         oEndAgain = (ImageView) findViewById(R.id.imgVw4x4_EndAgain);
         oTimer = (TextView) findViewById(R.id.txt4x4_time);
         oEndTime = (TextView) findViewById(R.id.txt4x4_EndTime);
-
+        oAddOne = (TextView) findViewById(R.id.txt4x4_addone);
 
         oHome.setOnClickListener(this);
         oAgain.setOnClickListener(this);
-        oSound.setOnClickListener(this);
         oEndHome.setOnClickListener(this);
         oEndAgain.setOnClickListener(this);
 
@@ -191,7 +192,9 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
         }
 
         //迴圈判斷點擊的牌
+        testi = 0;
         for (int i = 0; i < iCard.length; i++) {
+
             if (v.getId() == oImgVw4x4[i].getId()) {
                 //如果有上次點錯紀錄 , 將兩張牌蓋回背面 , 設定第一張牌為flase , 翻牌數-1 , 將First及Last設為預設
                 if (iLastCard != -1) {
@@ -204,7 +207,26 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
                 }
                 //如果點到的牌=false(翻面) 以及是第一張牌 , 將牌翻面 , 總翻牌數+1
                 if (!bFaceUp[i] && iFirstCard == -1) {
-                    oImgVw4x4[i].setImageResource(iCard[i][0]);
+                    testi = i;
+                    fpanim = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.back_scale);
+                    fpanim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            oImgVw4x4[testi].setImageResource(iCard[testi][0]);
+                            oImgVw4x4[testi].setAnimation(AnimationUtils.loadAnimation(Game_4x4.this, R.anim.front));
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    oImgVw4x4[i].setAnimation(fpanim);
                     iFirstCard = i;
                     bFaceUp[i] = true;
                     iSeleCount++;
@@ -214,16 +236,74 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
                 } else if (!bFaceUp[i] && iFirstCard != -1) {
                     //如果點到的牌之陣列第二維 = 第一張牌之陣列第二維 , 將牌翻面 , 總翻牌數+1
                     if (iCard[iFirstCard][1] == iCard[i][1]) {
-                        oImgVw4x4[i].setImageResource(iCard[i][0]);
+                        testi = i;
+                        fpanim = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.back_scale);
+                        fpanim.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                oImgVw4x4[testi].setImageResource(iCard[testi][0]);
+                                oImgVw4x4[testi].setAnimation(AnimationUtils.loadAnimation(Game_4x4.this, R.anim.front));
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        oImgVw4x4[i].setAnimation(fpanim);
                         iFirstCard = -1;
                         bFaceUp[i] = true;
                         iSeleCount++;
                         soundSc.play(iSc, 1.0F, 1.0F, 0, 0, 1.0F);
                     } else {
                         //將牌翻面 , 將i值存入iLastCard
-                        oImgVw4x4[i].setImageResource(iCard[i][0]);
+                        testi = i;
+                        fpanim = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.back_scale);
+                        fpanim.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                oImgVw4x4[testi].setImageResource(iCard[testi][0]);
+                                oImgVw4x4[testi].setAnimation(AnimationUtils.loadAnimation(Game_4x4.this, R.anim.front));
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        oImgVw4x4[i].setAnimation(fpanim);
                         iLastCard = i;
+                        tsec++;
+                        CalcTime();
                         soundFl.play(iFl, 1.0F, 1.0F, 0, 0, 1.0F);
+                        alphaanimation = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.alpha);
+                        alphaanimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                oAddOne.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                oAddOne.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        oAddOne.setAnimation(alphaanimation);
                     }
                 }
             }
@@ -245,25 +325,30 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    csec = tsec % 60;
-                    cmin = tsec / 60;
-
-                    if (cmin < 10) {
-                        sTime = "0" + cmin;
-                    } else {
-                        sTime = "" + cmin;
-                    }
-                    if (csec < 10) {
-                        sTime = sTime + ":0" + csec;
-                    } else {
-                        sTime = sTime + ":" + csec;
-                    }
-                    //s字串為00:00格式
-                    oTimer.setText(sTime);
+                    CalcTime();
                     break;
             }
         }
     };
+
+    private void CalcTime() {
+        csec = tsec % 60;
+        cmin = tsec / 60;
+
+        if (cmin < 10) {
+            sTime = "0" + cmin;
+        } else {
+            sTime = "" + cmin;
+        }
+        if (csec < 10) {
+            sTime = sTime + ":0" + csec;
+        } else {
+            sTime = sTime + ":" + csec;
+        }
+        //s字串為00:00格式
+        oTimer.setText(sTime);
+    }
+
     private TimerTask task = new TimerTask() {
         @Override
         public void run() {

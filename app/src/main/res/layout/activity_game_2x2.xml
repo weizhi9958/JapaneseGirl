@@ -36,22 +36,36 @@
                     android:layout_marginRight="20dp"
                     android:background="@drawable/again" />
 
-                <ImageView
-                    android:id="@+id/imgVw2x2_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sound_on" />
-
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txt2x2_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="00:00"
-                android:textColor="#ffffffff"
-                android:textSize="40dp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal" >
+
+                <TextView
+                    android:id="@+id/txt2x2_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="00:00"
+                    android:textColor="#ffffffff"
+                    android:textSize="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+1s"
+                    android:id="@+id/txt2x2_addone"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="75dp"
+                    android:textColor="#ffff0000"
+                    android:textSize="25dp"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <LinearLayout

@@ -2,9 +2,7 @@ package com.zhiz.japanesegirl;
 
 import android.app.Application;
 
-/**
- * Created by User on 2015/6/22.
- */
+
 public class GlobalVariable extends Application {
     public final int AllImgCard[][][] = {
             {{R.drawable.word_01, 0}, {R.drawable.word_02, 0}},
