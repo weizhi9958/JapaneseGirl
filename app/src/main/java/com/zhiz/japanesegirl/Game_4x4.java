@@ -58,8 +58,8 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
     MediaPlayer mbk, mgo;
     SoundPool soundCk, soundFl, soundSc;
     int iCk, iFl, iSc;
-    Animation alphaanimation, fpanim;
-    int testi = 0;
+    Animation alphaanimation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +192,6 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
         }
 
         //迴圈判斷點擊的牌
-        testi = 0;
         for (int i = 0; i < iCard.length; i++) {
 
             if (v.getId() == oImgVw4x4[i].getId()) {
@@ -207,26 +206,7 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
                 }
                 //如果點到的牌=false(翻面) 以及是第一張牌 , 將牌翻面 , 總翻牌數+1
                 if (!bFaceUp[i] && iFirstCard == -1) {
-                    testi = i;
-                    fpanim = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.back_scale);
-                    fpanim.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            oImgVw4x4[testi].setImageResource(iCard[testi][0]);
-                            oImgVw4x4[testi].setAnimation(AnimationUtils.loadAnimation(Game_4x4.this, R.anim.front));
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-                    oImgVw4x4[i].setAnimation(fpanim);
+                    oImgVw4x4[i].setImageResource(iCard[i][0]);
                     iFirstCard = i;
                     bFaceUp[i] = true;
                     iSeleCount++;
@@ -236,52 +216,14 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
                 } else if (!bFaceUp[i] && iFirstCard != -1) {
                     //如果點到的牌之陣列第二維 = 第一張牌之陣列第二維 , 將牌翻面 , 總翻牌數+1
                     if (iCard[iFirstCard][1] == iCard[i][1]) {
-                        testi = i;
-                        fpanim = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.back_scale);
-                        fpanim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                oImgVw4x4[testi].setImageResource(iCard[testi][0]);
-                                oImgVw4x4[testi].setAnimation(AnimationUtils.loadAnimation(Game_4x4.this, R.anim.front));
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        oImgVw4x4[i].setAnimation(fpanim);
+                        oImgVw4x4[i].setImageResource(iCard[i][0]);
                         iFirstCard = -1;
                         bFaceUp[i] = true;
                         iSeleCount++;
                         soundSc.play(iSc, 1.0F, 1.0F, 0, 0, 1.0F);
                     } else {
                         //將牌翻面 , 將i值存入iLastCard
-                        testi = i;
-                        fpanim = AnimationUtils.loadAnimation(Game_4x4.this, R.anim.back_scale);
-                        fpanim.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                oImgVw4x4[testi].setImageResource(iCard[testi][0]);
-                                oImgVw4x4[testi].setAnimation(AnimationUtils.loadAnimation(Game_4x4.this, R.anim.front));
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        oImgVw4x4[i].setAnimation(fpanim);
+                        oImgVw4x4[i].setImageResource(iCard[i][0]);
                         iLastCard = i;
                         tsec++;
                         CalcTime();
