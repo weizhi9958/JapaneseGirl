@@ -17,6 +17,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class GameMenu extends FragmentActivity implements View.OnClickListener {
@@ -134,8 +138,22 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
                 break;
             case R.id.imgVw_NameBtn:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
-                sUserName = oUserName.getText().toString();
-                oFmLayoutName.setVisibility(View.GONE);
+
+                String limitEx="[ `~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+
+                Pattern pattern = Pattern.compile(limitEx);
+                Matcher m = pattern.matcher(oUserName.getText().toString());
+
+                if(m.find()){
+                    Toast.makeText(GameMenu.this, "不允許輸入特殊符號", Toast.LENGTH_LONG).show();
+                }else {
+                    if(oUserName.getText().toString().equals("")){
+                        Toast.makeText(GameMenu.this, "請輸入ID", Toast.LENGTH_LONG).show();
+                    }else{
+                        sUserName = oUserName.getText().toString();
+                        oFmLayoutName.setVisibility(View.GONE);
+                    }
+                }
                 break;
             case R.id.imgVw_Name:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
