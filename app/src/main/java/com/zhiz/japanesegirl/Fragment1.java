@@ -38,7 +38,7 @@ public class Fragment1 extends Fragment {
     ArrayList<HashMap<String, String>> dataList;
 
     // url to get all products list
-    private static String url_all_data = "http://218.161.61.62/japan/get_4x4top10_data.php";
+    private static String url_all_data = "http://wesley.huhu.tw/japan/get_4x4top10_data.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";

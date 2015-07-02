@@ -36,7 +36,7 @@ import java.util.TimerTask;
 
 public class Game_2x2 extends Activity implements View.OnClickListener {
 
-    private static final String url_create_data = "http://218.161.61.62/japan/create_2x2data.php";
+    private static final String url_create_data = "http://wesley.huhu.tw/japan/create_2x2data.php";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";
     private ProgressDialog pDialog;

@@ -36,7 +36,7 @@ import java.util.TimerTask;
 
 public class Game_4x4 extends Activity implements View.OnClickListener {
 
-    private static final String url_create_data = "http://218.161.61.62/japan/create_4x4data.php";
+    private static final String url_create_data = "http://wesley.huhu.tw/japan/create_4x4data.php";
     private static final String TAG_NAME = "name";
     private static final String TAG_TIME = "time";
     private ProgressDialog pDialog;
@@ -44,7 +44,7 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
 
     private ImageView oImgVw4x4[] = new ImageView[16];
     boolean bFaceUp[] = new boolean[16];
-    private ImageView oHome, oAgain, oSound, oEndHome, oEndAgain;
+    private ImageView oHome, oAgain, oEndHome, oEndAgain;
     private TextView oTimer, oEndTime, oAddOne;
     private FrameLayout oFlayoutEnd;
     private int tsec = 0, csec = 0, cmin = 0;
@@ -171,6 +171,7 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
             case R.id.imgVw4x4_again:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
                 Intent itAgain = new Intent(this, Game_4x4.class);
+                itAgain.putExtra(TAG_NAME, sUserName);
                 startActivity(itAgain);
                 finish();
                 break;
@@ -185,6 +186,7 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
             case R.id.imgVw4x4_EndAgain:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
                 Intent itEndAgain = new Intent(this, Game_4x4.class);
+                itEndAgain.putExtra(TAG_NAME, sUserName);
                 startActivity(itEndAgain);
                 finish();
                 break;
