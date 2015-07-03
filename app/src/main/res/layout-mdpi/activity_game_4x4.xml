@@ -24,15 +24,16 @@
 
                 <ImageView
                     android:id="@+id/imgVw4x4_home"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/home" />
+                    android:background="@drawable/home"
+                    android:layout_marginLeft="20dp" />
 
                 <ImageView
                     android:id="@+id/imgVw4x4_again"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/again" />
 
@@ -49,9 +50,10 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="#ffffffff"
-                    android:textSize="40dp"
+                    android:textSize="35dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -60,9 +62,9 @@
                     android:id="@+id/txt4x4_addone"
                     android:layout_gravity="center_horizontal"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="75dp"
+                    android:layout_marginLeft="65dp"
                     android:textColor="#ffff0000"
-                    android:textSize="25dp"
+                    android:textSize="20dp"
                     android:visibility="gone" />
             </FrameLayout>
 
@@ -78,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="65dp">
 
                 <TableRow
                     android:layout_width="wrap_content"
@@ -86,23 +88,23 @@
 
                     <ImageView
                         android:id="@+id/imgVw4x4_0"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_1"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_2"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_3"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
                 </TableRow>
 
                 <TableRow
@@ -111,23 +113,23 @@
 
                     <ImageView
                         android:id="@+id/imgVw4x4_4"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_5"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_6"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_7"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
                 </TableRow>
 
                 <TableRow
@@ -136,23 +138,23 @@
 
                     <ImageView
                         android:id="@+id/imgVw4x4_8"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_9"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_10"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_11"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
                 </TableRow>
 
                 <TableRow
@@ -161,23 +163,23 @@
 
                     <ImageView
                         android:id="@+id/imgVw4x4_12"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_13"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_14"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
 
                     <ImageView
                         android:id="@+id/imgVw4x4_15"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp" />
+                        android:layout_width="70dp"
+                        android:layout_height="70dp" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

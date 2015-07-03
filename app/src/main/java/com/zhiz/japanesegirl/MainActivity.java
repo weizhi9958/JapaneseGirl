@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -52,10 +53,13 @@ public class MainActivity extends Activity {
 
 
     private static String url_get_version = "http://wesley.huhu.tw/japan/get_version_name.php";
+    private static String url_updata_instal = "http://wesley.huhu.tw/japan/update_instal_count.php";
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_VERSION = "version";
     private static final String TAG_VALUE = "value";
+    private static final String TAG_INSTAL = "instal";
+    private static final String TAG_USERNAME = "username";
 
     RelativeLayout oRlay;
     // Creating JSON Parser object
@@ -68,6 +72,9 @@ public class MainActivity extends Activity {
 
     String sVersionNameNow;
     String sVersionNameMySQL;
+    String sInstal;
+    String sUserName;
+    boolean bInstal = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,20 @@ public class MainActivity extends Activity {
             f.delete();
         }
 
+        //讀取偏好設定
+        SharedPreferences settings = getSharedPreferences(TAG_INSTAL, 0);
+        sInstal = settings.getString(TAG_INSTAL,"");
+        sUserName = settings.getString(TAG_USERNAME,"Player");
+
+        //第一次開啟後設instal值為t
+        if("".equals(sInstal)){
+            bInstal = false;
+            settings.edit().putString(TAG_INSTAL,"t").commit();
+        }else{
+            //已有數值就不做更新
+            bInstal = true;
+        }
+
         //執行檢查版本Class
         new GetVersionName().execute();
 
@@ -107,6 +128,7 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Intent it = new Intent(MainActivity.this, GameMenu.class);
+            it.putExtra(TAG_USERNAME,sUserName);
             startActivity(it);
             overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
             finish();
@@ -133,6 +155,11 @@ public class MainActivity extends Activity {
             List<NameValuePair> param = new ArrayList<NameValuePair>();
             param.add(new BasicNameValuePair("vername", TAG_VERSION));
             try {
+                //如果是第一次開啟 將資料庫value數值+1
+                if(!bInstal){
+                    jParser.makeHttpRequest(url_updata_instal, "POST", param);
+                }
+
                 JSONObject json = jParser.makeHttpRequest(url_get_version, "GET", param);
                 // Check your log cat for JSON reponse
                 Log.d("All Data: ", json.toString());
@@ -158,7 +185,6 @@ public class MainActivity extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             pDialog.dismiss();
-
             //版本判斷
             if(sVersionNameNow.equals(sVersionNameMySQL)){
                // Toast.makeText(MainActivity.this,"版本一致",Toast.LENGTH_LONG).show();

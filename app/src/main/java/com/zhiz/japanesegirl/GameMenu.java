@@ -1,6 +1,7 @@
 package com.zhiz.japanesegirl;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -25,7 +26,10 @@ import java.util.regex.Pattern;
 
 public class GameMenu extends FragmentActivity implements View.OnClickListener {
 
+    private static final String TAG_INSTAL = "instal";
     private static final String TAG_NAME = "name";
+    private static final String TAG_USERNAME = "username";
+
 
     FrameLayout oFmLayoutMain, oFmLayoutName, oFmLayoutRank, oFmLayoutIntro,oFmLayoutAbout;
     ImageView oImgVw_2x2, oImgVw_4x4, oImgVw_6x6;
@@ -63,6 +67,9 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
             sUserName = it.getStringExtra(TAG_NAME);
             oUserName.setText(it.getStringExtra(TAG_NAME));
             oFmLayoutName.setVisibility(View.GONE);
+        }else {
+            sUserName = it.getStringExtra(TAG_USERNAME);
+            oUserName.setText(it.getStringExtra(TAG_USERNAME));
         }
 
         CreateTab();
@@ -151,6 +158,11 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
                         Toast.makeText(GameMenu.this, "請輸入ID", Toast.LENGTH_LONG).show();
                     }else{
                         sUserName = oUserName.getText().toString();
+
+                        //將使用者名稱存入偏好設定
+                        SharedPreferences settings = getSharedPreferences(TAG_INSTAL, 0);
+                        settings.edit().putString(TAG_USERNAME,sUserName).commit();
+
                         oFmLayoutName.setVisibility(View.GONE);
                     }
                 }

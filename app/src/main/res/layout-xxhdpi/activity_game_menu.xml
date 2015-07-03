@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp">
 
             <ImageView
                 android:id="@+id/imgVw_2x2"
@@ -80,7 +81,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#be000000"
-        android:clickable="true">
+        android:clickable="true"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -158,8 +160,8 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="250dp"
-                    android:layout_height="367dp"
+                    android:layout_width="280dp"
+                    android:layout_height="416dp"
                     android:background="@drawable/rank_top10" />
 
                 <ImageView
@@ -173,7 +175,7 @@
                 <TabHost
                     android:id="@+id/tabHost"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:layout_marginTop="80dp">
@@ -243,16 +245,16 @@
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="250dp"
-                    android:layout_height="367dp"
+                    android:layout_width="280dp"
+                    android:layout_height="416dp"
                     android:background="@drawable/intro_view" />
 
                 <ScrollView
                     android:id="@+id/scrollView"
                     android:layout_width="wrap_content"
-                    android:layout_height="200dp"
+                    android:layout_height="230dp"
                     android:layout_gravity="top|center"
-                    android:layout_marginTop="80dp">
+                    android:layout_marginTop="90dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
