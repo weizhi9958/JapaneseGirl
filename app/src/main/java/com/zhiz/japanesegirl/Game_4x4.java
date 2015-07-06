@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +60,11 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
     SoundPool soundCk, soundFl, soundSc;
     int iCk, iFl, iSc;
     Animation alphaanimation;
+
+    //上次按下返回键的系统时间
+    private long lastBackTime = 0;
+    //当前按下返回键的系统时间
+    private long currentBackTime = 0;
 
 
     @Override
@@ -358,6 +364,25 @@ public class Game_4x4 extends Activity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
         mbk.start();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //捕获返回键按下的事件
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            //获取当前系统时间的毫秒数
+            currentBackTime = System.currentTimeMillis();
+            //比较上次按下返回键和当前按下返回键的时间差，如果大于2秒，则提示再按一次退出
+            if(currentBackTime - lastBackTime > 2 * 1000){
+                Toast.makeText(this, "再按一次返回鍵退出", Toast.LENGTH_SHORT).show();
+                lastBackTime = currentBackTime;
+            }else{ //如果两次按下的时间差小于2秒，则退出程序
+                finish();
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

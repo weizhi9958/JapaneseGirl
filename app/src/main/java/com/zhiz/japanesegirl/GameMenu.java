@@ -7,8 +7,8 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,11 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
     private TabHost mTabHost;
     private TabManager mTabManager;
 
+    //上次按下返回键的系统时间
+    private long lastBackTime = 0;
+    //当前按下返回键的系统时间
+    private long currentBackTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +78,7 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
             oUserName.setText(it.getStringExtra(TAG_USERNAME));
         }
 
-        CreateTab();
+
     }
 
     private void initView() {
@@ -174,9 +180,12 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
             case R.id.imgVw_Rank:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
                 oFmLayoutRank.setVisibility(View.VISIBLE);
+                CreateTab();
                 break;
             case R.id.imgVw_Close:
                 soundCk.play(iCk, 1.0F, 1.0F, 0, 0, 1.0F);
+                mTabHost.setCurrentTab(0);
+                mTabHost.clearAllTabs();
                 oFmLayoutRank.setVisibility(View.GONE);
                 break;
             case R.id.imgVw_Intro:
@@ -208,7 +217,6 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
 
     private void CreateTab() {
 
-        mTabHost = null;
         mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
         mTabManager = new TabManager(this, mTabHost, R.id.realtabcontent);
@@ -216,16 +224,45 @@ public class GameMenu extends FragmentActivity implements View.OnClickListener {
         mTabHost.setCurrentTab(0);//設定一開始就跳到第一個分頁
         mTabManager.addTab(
                 mTabHost.newTabSpec("4x4").setIndicator("4x4"),
-                Fragment1.class, null);
+                Give_4X4_Top10_All.class, null);
 
-        for (int i = 0; i < mTabHost.getChildCount(); i++) {
+        Give_4X4_Top10_Me b = new Give_4X4_Top10_Me();
+        Bundle bundle = new Bundle();
+        bundle.putString(TAG_NAME, sUserName);
+        b.setArguments(bundle);
+        mTabManager.addTab(
+                mTabHost.newTabSpec("我的排名").setIndicator("我的排名"),
+                Give_4X4_Top10_Me.class, bundle);
+
+        TabWidget tabWidget = mTabHost.getTabWidget();   //取得tab的物件
+        int count = tabWidget.getChildCount();   //取得tab的分頁有幾個
+        for (int i = 0; i < count; i++) {
             //修改字體大小及顏色
-            TextView tv = (TextView) mTabHost.getChildAt(i).findViewById(android.R.id.title);
-            tv.setTextSize(20);
+            TextView tv = (TextView) tabWidget.getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextSize(18);
             tv.setTextColor(this.getResources().getColorStateList(android.R.color.white));
 
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //捕获返回键按下的事件
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            //获取当前系统时间的毫秒数
+            currentBackTime = System.currentTimeMillis();
+            //比较上次按下返回键和当前按下返回键的时间差，如果大于2秒，则提示再按一次退出
+            if(currentBackTime - lastBackTime > 2 * 1000){
+                Toast.makeText(this, "再按一次返回鍵退出", Toast.LENGTH_SHORT).show();
+                lastBackTime = currentBackTime;
+            }else{ //如果两次按下的时间差小于2秒，则退出程序
+                finish();
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

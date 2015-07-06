@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Zhi on 2015/6/20.
  */
-public class Fragment1 extends Fragment {
+public class Give_4X4_Top10_All extends Fragment {
 
     private ProgressDialog pDialog;
 
@@ -87,7 +87,7 @@ public class Fragment1 extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(v.getContext());
-            pDialog.setMessage("讀取資料中，請稍後..");
+            pDialog.setMessage("資料讀取中，請稍後..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
